@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-
 import Layout from "../Layouts/Layout";
+import Contact from "../pages/Contact";
 
 interface RouterConfig {
   path: string;
@@ -12,7 +12,12 @@ const routes: RouterConfig[] = [
   {
     path: "/",
     element: <Layout />,
-    children: [],
+    children: [
+      {
+        path: "/",
+        element: <Contact />,
+      },
+    ],
   },
 ];
 
