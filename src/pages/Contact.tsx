@@ -56,7 +56,6 @@ const Contact: React.FC = () => {
   const handleDelete = (contactId: number) => {
     dispatch(removeItem(contactId));
   };
-  console.log(contact);
   const handleContactForm = () => {
     setIsContactFrom(true);
     setIsContactCard(false);
