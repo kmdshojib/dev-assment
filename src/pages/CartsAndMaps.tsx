@@ -1,9 +1,11 @@
 import React from "react";
-// import CovidMap from "../Components/CovidMap";
+import CovidMap from "../Components/CovidMap";
 import { useApiQuery } from "../api/api";
 import { CountryData, CovidData, HistoricalData } from "../types/types";
 import LineGraph from "../Components/LineGarph";
 import Spinner from "../Components/Spinner";
+import { ResponsiveContainer } from "recharts";
+import PieChartComponent from "../Components/PieGraph";
 
 const CartsAndMaps: React.FC = () => {
   const {
@@ -16,10 +18,7 @@ const CartsAndMaps: React.FC = () => {
     data: countries,
     error: countriesError,
     isLoading: countriesLoading,
-  } = useApiQuery<{ message: string; CountryData: CountryData[] }, Error>(
-    "/countries",
-    "countries"
-  );
+  } = useApiQuery<CountryData[], Error>("/countries", "countries");
 
   const {
     data: historical,
@@ -34,19 +33,23 @@ const CartsAndMaps: React.FC = () => {
     Error
   >("/historical/all?lastdays=all", "historical");
 
-  console.log(allCovid);
+  console.log(countries);
   return (
-    <div className="flex justify-center items-center">
-      {/* <CovidMap covidData={countries?.CountryData || []} /> */}
+    <div className="flex flex-col justify-center items-center">
+      <CovidMap covidData={countries || []} />
+      {/* <div>LineChart which shows total cases deaths and recovered</div> */}
       {historical ? (
-        <LineGraph
-          casesData={historical.cases}
-          deathsData={historical.deaths}
-          recoveredData={historical.recovered}
-        />
+        <ResponsiveContainer className="flex justify-center items-center">
+          <LineGraph
+            casesData={historical.cases}
+            deathsData={historical.deaths}
+            recoveredData={historical.recovered}
+          />
+        </ResponsiveContainer>
       ) : (
         <Spinner />
       )}
+      {allCovid && <PieChartComponent data={allCovid} />}
     </div>
   );
 };

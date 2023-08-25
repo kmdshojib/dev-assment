@@ -29,7 +29,6 @@ const LineGraph: React.FC<LineGraphProps> = ({
     deaths: deathsData[date],
     recovered: recoveredData[date],
   }));
-  console.log(chartData);
   return (
     <div className="mt-5 ml-5">
       <LineChart

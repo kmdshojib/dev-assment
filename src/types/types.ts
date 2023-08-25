@@ -12,6 +12,7 @@ export interface CountryData {
   cases: number;
   deaths: number;
   recovered: number;
+  active: number;
 }
 
 export interface CovidData {
