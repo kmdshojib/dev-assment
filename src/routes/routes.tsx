@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../Layouts/Layout";
 import Contact from "../pages/Contact";
+import CartsAndMaps from "../pages/CartsAndMaps";
 
 interface RouterConfig {
   path: string;
@@ -16,6 +17,10 @@ const routes: RouterConfig[] = [
       {
         path: "/",
         element: <Contact />,
+      },
+      {
+        path: "/chartsandmaps",
+        element: <CartsAndMaps />,
       },
     ],
   },

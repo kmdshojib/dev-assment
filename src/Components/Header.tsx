@@ -47,7 +47,7 @@ const Header: React.FC = () => {
             <ul className="py-4 px-6">
               <li className="mb-2">
                 <Link
-                  to="/contact"
+                  to="/"
                   className="block p-2 hover:bg-indigo-100 transition duration-300 text-gray-700"
                 >
                   Contact
