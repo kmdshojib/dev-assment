@@ -1,7 +1,7 @@
 import axios from "axios";
-import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 
-const baseURL = "https://disease.sh/v3";
+const baseURL = "https://disease.sh/v3/covid-19";
 
 const api = axios.create({
   baseURL,
@@ -17,17 +17,3 @@ export const useApiQuery = <TData, TError>(
   });
 };
 
-export const useApiMutation = <TData, TError>(
-  endpoint: string,
-  queryKey: string
-) => {
-  const queryClient = useQueryClient();
-
-  return useMutation<TData, TError, any, any>(async (data) => {
-    const response = await api.post(endpoint, data);
-
-    queryClient.invalidateQueries(queryKey);
-
-    return response.data;
-  });
-};
