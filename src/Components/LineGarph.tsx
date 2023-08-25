@@ -32,7 +32,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
   return (
     <div className="mt-5 ml-5">
       <LineChart
-        width={730}
+        width={400}
         height={250}
         data={chartData}
         margin={{ top: 5, right: 30, left: 25, bottom: 5 }}

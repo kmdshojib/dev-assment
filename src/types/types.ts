@@ -14,7 +14,12 @@ export interface CountryData {
   recovered: number;
   active: number;
 }
-
+export interface InputProps {
+  id: number;
+  firstName: string;
+  lastName: string;
+  status: string;
+}
 export interface CovidData {
   updated: number;
   cases: number;

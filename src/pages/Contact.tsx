@@ -4,17 +4,13 @@ import { addItem, removeItem, updateItem } from "../app/Features/contactSlice";
 import { generateUniqueId } from "../functions/generateId";
 import { useState } from "react";
 import ContactCard from "../Components/ContactCard";
-
-export interface InputProps {
-  id: number;
-  firstName: string;
-  lastName: string;
-  status: string;
-}
+import ContactForm from "../Components/ContactForm";
+import { InputProps } from "../types/types";
 
 const Contact: React.FC = () => {
-  const { register, handleSubmit, setValue } = useForm<InputProps>();
-  // const [isContactFrom, setIsContactFrom] = useState(true);
+  const { register, handleSubmit, setValue, reset } = useForm<InputProps>();
+  const [isContactFrom, setIsContactFrom] = useState(false);
+  const [isContactCard, setIsContactCard] = useState(true);
   const [editingContact, setEditingContact] = useState<InputProps | null>(null);
   const dispatch = UseAppDispatch();
   const contact = useAppSelector((state) => state.contact);
@@ -28,21 +24,26 @@ const Contact: React.FC = () => {
         updateItem({ id: editingContact.id, updatedItem: updatedContact })
       );
 
-     
+      reset();
     } else {
-  
       const newContact: InputProps = {
         ...data,
         id: generateUniqueId(),
       };
       dispatch(addItem(newContact));
+      reset();
     }
 
-    setEditingContact(null); 
+    setEditingContact(null);
+    setIsContactFrom(false);
+    setIsContactCard(true);
   };
-
+  const handleFormSubmit = (data: InputProps) => {
+    handleContact(data);
+  };
   const handleEdit = (contactId: number) => {
- 
+    setIsContactCard(false);
+    setIsContactFrom(true);
     const selectedContact = contact.items.find((item) => item.id === contactId);
     if (selectedContact) {
       setEditingContact(selectedContact);
@@ -56,95 +57,54 @@ const Contact: React.FC = () => {
     dispatch(removeItem(contactId));
   };
   console.log(contact);
+  const handleContactForm = () => {
+    setIsContactFrom(true);
+    setIsContactCard(false);
+  };
   return (
     <div className="flex flex-col items-center justify-center mt-5">
       <button
+        onClick={handleContactForm}
         type="button"
         className="w-[200px] bg-indigo-500 text-white py-2 rounded-md hover:bg-indigo-600 transition duration-300"
       >
         Create Contact
       </button>
-
-      <div className="flex justify-center items-center mt-5">
-        <section className="w-full max-w-xl p-6 bg-white rounded-lg shadow-xl">
-          <h2 className="text-2xl font-semibold mb-6">Create Contact</h2>
-          <form onSubmit={handleSubmit(handleContact)}>
-            <div className="mb-4">
-              <label
-                htmlFor="firstName"
-                className="block text-sm font-medium text-gray-700"
-              >
-                First Name
-              </label>
-              <input
-                {...register("firstName")}
-                id="firstName"
-                type="text"
-                className="mt-1 p-2 w-full border rounded-md focus:ring focus:ring-indigo-300"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label
-                htmlFor="lastName"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Last Name
-              </label>
-              <input
-                id="lastName"
-                type="text"
-                className="mt-1 p-2 w-full border rounded-md focus:ring focus:ring-indigo-300"
-                {...register("lastName")}
-              />
-            </div>
-            <div className="mb-4">
-              <p className="block text-sm font-medium text-gray-700">Status</p>
-              <div className="mt-1">
-                <label className="inline-flex items-center">
-                  <input
-                    type="radio"
-                    className="form-radio text-indigo-500"
-                    {...register("status")}
-                    value="active"
-                  />
-                  <span className="ml-2">Active</span>
-                </label>
-                <label className="inline-flex items-center ml-4">
-                  <input
-                    type="radio"
-                    className="form-radio text-indigo-500"
-                    {...register("status")}
-                    value="inactive"
-                  />
-                  <span className="ml-2">Inactive</span>
-                </label>
-              </div>
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-indigo-500 text-white py-2 rounded-md hover:bg-indigo-600 transition duration-300"
-            >
-              Save Contact
-            </button>
-          </form>
-        </section>
-      </div>
+      <>
+        {isContactFrom && (
+          <ContactForm
+            register={register}
+            onSubmit={handleSubmit(handleFormSubmit)}
+          />
+        )}
+      </>
 
       <>
-        {contact.items.map((item) => (
-          <div key={item.id}>
-            <ContactCard
-              key={item.id}
-              id={item.id}
-              firstName={item.firstName}
-              lastName={item.lastName}
-              status={item.status}
-              onEdit={() => handleEdit(item.id)}
-              onDelete={() => handleDelete(item.id)}
-            />
+        {contact.items.length > 0 ? (
+          <div className="flex justify-center mt-10 md:ml-20 ">
+            {isContactCard && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                {contact.items.map((item) => (
+                  <div key={item.id}>
+                    <ContactCard
+                      key={item.id}
+                      id={item.id}
+                      firstName={item.firstName}
+                      lastName={item.lastName}
+                      status={item.status}
+                      onEdit={() => handleEdit(item.id)}
+                      onDelete={() => handleDelete(item.id)}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        ))}
+        ) : (
+          <h2 className="text-center mt-5">
+            No Contact found! Please add contact form create Contact Button!
+          </h2>
+        )}
       </>
     </div>
   );

@@ -1,19 +1,34 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [pageName, setPageName] = useState("Contact Page");
+  const location = useLocation();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  useEffect(() => {
+    const pathname = location.pathname;
+    let pageTitle = "";
+
+    if (pathname === "/") {
+      pageTitle = "Contact Page";
+      setPageName(pageTitle);
+    } else if (pathname === "/chartsandmaps") {
+      pageTitle = "Charts and Maps";
+      setPageName(pageTitle);
+    }
+
+    document.title = pageTitle;
+  }, [location, setPageName]);
 
   return (
     <div>
       <div>
-        {/* Header */}
         <nav className="bg-indigo-500 p-4 text-white">
           <div className="container mx-auto flex justify-between items-center">
-            <h1 className="text-2xl font-semibold">Contact Page</h1>
+            <h1 className="text-2xl font-semibold"> {pageName}</h1>
             <button
               type="button"
               title="button"

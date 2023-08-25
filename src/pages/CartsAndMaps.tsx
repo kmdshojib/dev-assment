@@ -33,13 +33,21 @@ const CartsAndMaps: React.FC = () => {
     Error
   >("/historical/all?lastdays=all", "historical");
 
-  console.log(countries);
   return (
     <div className="flex flex-col justify-center items-center">
-      <CovidMap covidData={countries || []} />
-      {/* <div>LineChart which shows total cases deaths and recovered</div> */}
+      <h2 className="mt-2 text-gray-700">
+        Upon clicking on the marker you will find the popup.
+      </h2>
+      {countriesLoading ? (
+        <Spinner />
+      ) : (
+        <CovidMap covidData={countries || []} />
+      )}
+      <h2 className="mt-2 text-gray-700">
+        LineChart which shows total cases deaths and recovered
+      </h2>
       {historical ? (
-        <ResponsiveContainer className="flex justify-center items-center">
+        <ResponsiveContainer className="flex justify-center items-center ml-2 mr-2">
           <LineGraph
             casesData={historical.cases}
             deathsData={historical.deaths}
@@ -49,7 +57,13 @@ const CartsAndMaps: React.FC = () => {
       ) : (
         <Spinner />
       )}
-      {allCovid && <PieChartComponent data={allCovid} />}
+      {allCovid ? (
+        <div className="ml-5">
+          <PieChartComponent data={allCovid} />
+        </div>
+      ) : (
+        <Spinner />
+      )}
     </div>
   );
 };
