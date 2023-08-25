@@ -21,20 +21,16 @@ const Contact: React.FC = () => {
 
   const handleContact: SubmitHandler<InputProps> = (data) => {
     if (editingContact) {
-      // Update the existing contact
       const updatedContact: Partial<InputProps> = {
         ...data,
       };
-
-      // Dispatch the action to update the contact
       dispatch(
         updateItem({ id: editingContact.id, updatedItem: updatedContact })
       );
 
-      // Dispatch the action to update the contact
-      // Update your store with updatedContact
+     
     } else {
-      // Create a new contact
+  
       const newContact: InputProps = {
         ...data,
         id: generateUniqueId(),
@@ -42,16 +38,14 @@ const Contact: React.FC = () => {
       dispatch(addItem(newContact));
     }
 
-    setEditingContact(null); // Clear the editing state
+    setEditingContact(null); 
   };
 
   const handleEdit = (contactId: number) => {
-    // Find the contact to be edited based on the contactId
+ 
     const selectedContact = contact.items.find((item) => item.id === contactId);
     if (selectedContact) {
-      // Set the editing state with the selected contact's values
       setEditingContact(selectedContact);
-      // Populate the form fields with the selected contact's values
       setValue("firstName", selectedContact.firstName);
       setValue("lastName", selectedContact.lastName);
       setValue("status", selectedContact.status);
