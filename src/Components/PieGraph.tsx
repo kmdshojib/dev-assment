@@ -19,7 +19,7 @@ const PieChartComponent: React.FC<PieChartProps> = ({ data }) => {
   ];
 
   return (
-    <div className="mt-5 ml-5">
+    <div className="mt-5 ml-10">
       <h2 className="text-center">COVID-19 Data Distribution</h2>
       <PieChart width={400} height={400}>
         <Pie
