@@ -1,6 +1,6 @@
 ## DevTest-Assessment
 
-Delpoyed on Vercel [https://taiyo-ai-dev-assessment.vercel.app/](Link)
+Delpoyed on Vercel [Link](https://taiyo-ai-dev-assessment.vercel.app/)
 
 ### `npm start`
 
